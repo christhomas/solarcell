@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE KDevPrjSession>
+<KDevPrjSession>
+<LastCompileConfig>(Default)</LastCompileConfig>
+ <Mainframe MaximizeMode="1" />
+ <DocsAndViews NumberOfDocuments="2" >
+<Doc0 CursorPosLine="122" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="0" FileName="/home/usr/Code/solarcell/src/ScreamerNode.cpp" >
+<View0 Top="0" Width="784" Attach="1" Height="834" Left="0" Focus="0" Type="KWriteView" MinMaxMode="0" />  </Doc0>
+  <Doc1 CursorPosLine="102" Type="KWriteDoc" NumberOfViews="1" CursorPosCol="54" FileName="/home/usr/Code/solarcell/src/UnixScreamerNode.cpp" >
+<View0 Top="0" Width="784" Attach="1" Height="834" Left="0" Focus="1" Type="KWriteView" MinMaxMode="0" />  </Doc1> </DocsAndViews></KDevPrjSession>
