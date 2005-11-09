@@ -34,7 +34,7 @@ $scellContent = <<<HTML
 HTML;
 
 /* Debugging magpie stuff */
-define('MAGPIE_DEBUG', 2);
+//define('MAGPIE_DEBUG', 2);
 //define('MAGPIE_CACHE_AGE', 20);
 /* end debugging */
 define('MAGPIE_CACHE_DIR', 'rsscache');

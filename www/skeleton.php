@@ -14,10 +14,10 @@
 ?>
 <div id="scellhead">
 	<div><img src="images/nav_head.png" alt="main logo image"></div>
-	<?php /*<div id="sflogo">
+	<div id="sflogo">
 		<a href="http://sourceforge.net/projects/solarcell"> 
 		<img src="http://sourceforge.net/sflogo.php?group_id=70906&amp;type=5" alt="SourceForge.net Logo">		</a>
-	</div>*/ ?>
+	</div>
 	<div id="slogan"><img src="images/nav_slogan.png" alt="solarcell slogan"></div>
 	<div id="navbar">
 		<a href="index.php"><img src="images/nav_home.png" alt="home page link"></a>
