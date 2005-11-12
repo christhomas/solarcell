@@ -37,7 +37,7 @@ if(!isset($_GET["screenShot"])){
 
 $scellContent = <<< END_TEXT
 <img src="images/text_shots$imgapp.png" alt="Screenshot selection" />
-<p>$descriptoin</p>
+<p>$description</p>
 <div id="gallery" class="floatFix">$imageData</div>
 END_TEXT;
 
