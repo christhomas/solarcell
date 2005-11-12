@@ -1,11 +1,27 @@
-<?php 
-//	Default description (if rss is unavailable)
-$description = <<<HTML
-SolarCell is a GTK+ 2.0 application interface for the Lightwave ScreamerNet rendering subsystem. It 
-  allows the control and rendering of a Lightwave scene through an easy to use graphical interface. Another 
-  plus would be that it can run on linux, which enables people to build cheap renderfarms out of commodity 
-  hardware and the absolutely free GNU/Linux Operating System.
-HTML;
+<?php
+//	Default description and news text(if rss is unavailable) 
+$description = "There is no RSS Feed information: Try refreshing the page";
+$newsText = $description;
+
+include("localFeed.php");
+//print("<pre>"); print_r($rss); print("</pre>");
+if($rss && ($rss->channel['link'] == "http://solarcell.sf.net/")){
+	$description = "";
+	$newsText = "";
+	
+	foreach ($rss->items as $item) {
+		if($item["ams"]["category"] == "summary"){
+			$description = $item['description'];
+		}
+		
+		if($item["ams"]["category"] == "news"){
+			$newsText .= "<div class=\"newsItem\">";			
+			$newsText .= "<div><b>".$item["ams"]["date"]."</b></div>";
+			$newsText .= "<div><a href=\"news.php#".$item["description"]."\">".$item["description"]."</a></div>";
+			$newsText .= "</div>";
+		}		
+	}
+}
 
 include("library.php");
 $imgapp = getImageAppend();
@@ -33,39 +49,8 @@ $scellContent = <<<HTML
 <div class="newsBody">
 HTML;
 
-/* Debugging magpie stuff */
-//define('MAGPIE_DEBUG', 2);
-//define('MAGPIE_CACHE_AGE', 20);
-/* end debugging */
-define('MAGPIE_CACHE_DIR', 'rsscache');
-define('MAGPIE_CACHE_TYPE','session');
-define('MAGPIE_CACHE_SOFTLIMIT',20*1024);
-require_once('magpierss/rss_fetch.inc');
-
-// load some RSS file
-$rss = fetch_rss("http://sourceforge.net/export/rss2_projsummary.php?group_id=70906");
-
-// here we can work with RSS fields
-if($rss && ($rss->channel['title'] == "SourceForge.net: Project Summary: SolarCell (solarcell project)"))
-{
-	$newsData = "";
-	foreach ($rss->items as $item) {
-		$description = $item['description'];
-		$tag = ": ";
-		$description = substr($description,strpos($description,$tag)+strlen($tag));
-		$newsData .= "<p>".$item['description']."</p>";		
-	}
-}else{
-	//	Error
-	print("Error: RSS Feed not found, here is a dump of the rss feed<br>");
-	echo "<pre>";
-	print_r($r);
-	echo "</pre>";	
-	die("quitting");
-}
-
 $scellContent .=<<<HTML
-$newsData;
+$newsText
 </div>
 </div>
 HTML;

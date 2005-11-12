@@ -149,6 +149,9 @@ img{ border: 0; }
 	font-size: small;
 	overflow-y: scroll;
 }
+.newsItem{
+	margin-bottom: 10px;
+}
 
 /*********************/
 /* Screenshot styles */
