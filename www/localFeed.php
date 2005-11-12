@@ -1,6 +1,6 @@
 <?php
 /* Debugging magpie stuff */
-define('MAGPIE_DEBUG', 2);
+//define('MAGPIE_DEBUG', 2);
 define('MAGPIE_CACHE_AGE', 3600);
 /* end debugging */
 require_once("SourceForgeRSS.php");

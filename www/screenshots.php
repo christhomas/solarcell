@@ -33,6 +33,8 @@ if(!isset($_GET["screenShot"])){
 	$g->addImage($_GET["screenShot"],"#","");
 	$g->showBackButton("images/text_back".$imgapp.".png","screenshots.php");
 	$imageData = $g->getHTML();
+	
+	$description = "Click the back button to return to the gallery";
 }
 
 $scellContent = <<< END_TEXT
