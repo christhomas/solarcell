@@ -15,7 +15,7 @@ if(!isset($_GET["screenShot"])){
 
 	// Setup the gallery data 
 	include("localFeed.php");
-	if($rss && ($rss->channel['link'] == "http://solarcell.sf.net/")){
+	if($rss && ($rss->channel['link'] == "http://kosh.kmem.org/projects/solarcell/")){
 		$description = "Select a screenshot to see a larger image";
 
 		foreach($rss->items as $item){

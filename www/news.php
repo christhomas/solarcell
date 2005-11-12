@@ -4,7 +4,7 @@ $description = "There is no RSS Feed information: Try refreshing the page";
 
 include("localFeed.php");
 //print("<pre>"); print_r($rss); print("</pre>");
-if($rss && ($rss->channel['link'] == "http://solarcell.sf.net/")){
+if($rss && ($rss->channel['link'] == "http://kosh.kmem.org/projects/solarcell/")){
 	$description = "";
 	$scellContent = "<div class=\"newsBody\">";
 	

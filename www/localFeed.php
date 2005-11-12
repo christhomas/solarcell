@@ -1,20 +1,22 @@
 <?php
 /* Debugging magpie stuff */
 //define('MAGPIE_DEBUG', 2);
-define('MAGPIE_CACHE_AGE', 3600);
+define("MAGPIE_CACHE_AGE", 3600);
 /* end debugging */
-require_once("SourceForgeRSS.php");
+require_once("phpbase/SourceForgeRSS.php");
 require_once("rsswriter.php");
 
 if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
-	define('MAGPIE_CACHE_ON', false);
+	define("MAGPIE_CACHE_ON", false);
 	require_once("magpierss/rss_fetch.inc");	
-		
-	$feed['summary'] = fetch_rss("http://sourceforge.net/export/rss2_projsummary.php?group_id=70906");
-	$feed['news'] = fetch_rss("http://sourceforge.net/export/rss2_projnews.php?group_id=70906&rss_fulltext=1");
-	$feed['files'] = fetch_rss("http://sourceforge.net/export/rss2_projfiles.php?group_id=70906");
 	
-	$rss = new RSSWriter(	"http://solarcell.sf.net/", 
+	$site = "http://kosh.kmem.org/projects/solarcell/";
+		
+	$feed["summary"] = fetch_rss("http://sourceforge.net/export/rss2_projsummary.php?group_id=70906");
+	$feed["news"] = fetch_rss("http://sourceforge.net/export/rss2_projnews.php?group_id=70906&rss_fulltext=1");
+	$feed["files"] = fetch_rss("http://sourceforge.net/export/rss2_projfiles.php?group_id=70906");
+	
+	$rss = new RSSWriter(	$site, 
 											"RSS site feed linker",
 											"Antimatter Studios", 
 											array(	"ams:publisher" => "Antimatter Studios", 
@@ -26,22 +28,21 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	/*	Insert all the summary elements
 	 * 
 	 */
-	$description = SourceforgeRSS::parseChunk($feed['summary']->items[0]['description'],"Project description: ");
-	$rss->addItem("http://solarcell.sf.net","SolarCell",array(	"description" => $description,
-																								"ams:category" => "summary"	));
-	
-	foreach($feed['files']->items as $item){
-		$rssData = SourceforgeRSS::parseFileRelease($item);
-		$type = "source";
-		if($rssData['binary'] == true) $type = "binary";
-		
-		$rss->addItem($rssData['url'],$rssData['file'], array(	"ams:category" => "file",
-																								"ams:count" => $rssData['dlcount'], 
-																								"ams:size" => $rssData['filesize'],
-																								"ams:date" => $rssData['shortdate'],
-																								"ams:type" => $type));
+	$description = SourceforgeRSS::parseChunk($feed["summary"]->items[0]["description"],"Project description: ");
+	$rss->addItem($site,"SolarCell",array(	"description" => $description,
+																	"ams:category" => "summary"	));
+	if($feed["files"]){
+		foreach($feed["files"]->items as $item){
+			$rssData = SourceforgeRSS::parseFileRelease($item);
+			
+			$rss->addItem($rssData["url"],$rssData["file"], array(	"ams:category" => "file",
+																									"ams:count" => $rssData["dlcount"], 
+																									"ams:size" => $rssData["filesize"],
+																									"ams:date" => $rssData["shortdate"],
+																									"ams:type" => $rssData["type"]));
+		}
 	}
-	
+		
 	/*	Insert all the screenshot information
 	 * 
 	 */
@@ -55,15 +56,19 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	/*	Insert all the news text
 	 * 
 	 */
-	foreach($feed['news']->items as $item){
-		$rssData = SourceforgeRSS::parseNews($item);
-		
-		$rss->addItem($rssData['url'],$rssData['author'],array(	"description" => $rssData['headline'],
-																									"ams:category" => "news",																								
-																									"ams:body" => $rssData['body'],
-																									"ams:date" => $rssData['shortdate']));
-	}
-	
+	 if($feed["news"]){
+		$numItem = 0;
+		foreach($feed["news"]->items as $item){
+			$rssData = SourceforgeRSS::parseNews($item);
+			
+			$rss->addItem($rssData["url"],$rssData["author"],array(	"description" => $rssData["headline"],
+																										"ams:category" => "news",
+																										"ams:newsID" => $numItem++,
+																										"ams:newsCount" => count($feed["news"]->items),																							
+																										"ams:body" => $rssData["body"],
+																										"ams:date" => $rssData["shortdate"]));
+		}
+	 }	
 	/*	Serialise out to the feed reader
 	 * 
 	 */

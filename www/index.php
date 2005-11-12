@@ -5,13 +5,13 @@ $newsText = $description;
 
 include("localFeed.php");
 //print("<pre>"); print_r($rss); print("</pre>");
-if($rss && ($rss->channel['link'] == "http://solarcell.sf.net/")){
+if($rss && ($rss->channel["link"] == "http://kosh.kmem.org/projects/solarcell/")){
 	$description = "";
 	$newsText = "";
 	
 	foreach ($rss->items as $item) {
 		if($item["ams"]["category"] == "summary"){
-			$description = $item['description'];
+			$description = $item["description"];
 		}
 		
 		if($item["ams"]["category"] == "news"){

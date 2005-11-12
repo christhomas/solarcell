@@ -8,7 +8,7 @@ $imgapp = getImageAppend();
 $description = "There is no RSS Feed information: Try refreshing the page";
 
 include("localFeed.php");
-if($rss && ($rss->channel['link'] == "http://solarcell.sf.net/")){
+if($rss && ($rss->channel['link'] == "http://kosh.kmem.org/projects/solarcell/")){
 $srcRow = <<<HTML
 <tr><td colspan="2" >
 	<img src="images/text_src$imgapp.png" alt="Source code Download links" />
