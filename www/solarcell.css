@@ -147,7 +147,7 @@ img{ border: 0; }
 .newsBody{
 	height: 35em;
 	font-size: small;
-	overflow-y: scroll;
+	overflow: scroll;
 }
 .newsItem{
 	margin-bottom: 10px;
