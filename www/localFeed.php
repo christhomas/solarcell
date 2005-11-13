@@ -6,6 +6,8 @@ define("MAGPIE_CACHE_AGE", 3600);
 require_once("phpbase/SourceForgeRSS.php");
 require_once("rsswriter.php");
 
+$server = "http://".$_SERVER["HTTP_HOST"].substr($_SERVER["PHP_SELF"],0,strrpos($_SERVER["PHP_SELF"],"/"));
+
 if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	define("MAGPIE_CACHE_ON", false);
 	require_once("magpierss/rss_fetch.inc");	
@@ -20,7 +22,10 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 											"RSS site feed linker",
 											"Antimatter Studios", 
 											array(	"ams:publisher" => "Antimatter Studios", 
-														"ams:creator" => "Christopher Alexander Thomas")
+														"ams:creator" => "Christopher Alexander Thomas",
+														"ams:filecount" => count($feed["files"]->items),
+														"ams:screenshotcount" => 4,
+														"ams:newscount" => count($feed["news"]->items))
 										);
 													
 	$rss->useModule("ams", "http://kosh.kmem.org/projectRSSModule/");
@@ -46,7 +51,7 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	/*	Insert all the screenshot information
 	 * 
 	 */
-	$base = "images/screenshot";
+	$base = $server."/images/screenshot";
 	for($a=1;$a<5;$a++){
 		$rss->addItem($base.$a."_thumb.png","Screenshot ".$a, 
 						array(	"ams:category" => "screenshot", 
@@ -64,7 +69,6 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 			$rss->addItem($rssData["url"],$rssData["author"],array(	"description" => $rssData["headline"],
 																										"ams:category" => "news",
 																										"ams:newsID" => $numItem++,
-																										"ams:newsCount" => count($feed["news"]->items),																							
 																										"ams:body" => $rssData["body"],
 																										"ams:date" => $rssData["shortdate"]));
 		}
@@ -83,7 +87,6 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	//print("<pre>"); print_r($_SERVER); print("</pre>");
 
 	// load some RSS file
-	$server = "http://".$_SERVER["HTTP_HOST"].substr($_SERVER["PHP_SELF"],0,strrpos($_SERVER["PHP_SELF"],"/"));
 	$rss = fetch_rss($server."/localFeed.php?getFeed=please");
 }
 ?>
