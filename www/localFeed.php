@@ -24,7 +24,7 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 											array(	"ams:publisher" => "Antimatter Studios", 
 														"ams:creator" => "Christopher Alexander Thomas",
 														"ams:filecount" => count($feed["files"]->items),
-														"ams:screenshotcount" => 4,
+														"ams:imagecount" => 4,
 														"ams:newscount" => count($feed["news"]->items))
 										);
 													
