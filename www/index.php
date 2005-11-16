@@ -11,7 +11,7 @@ if($rss && ($rss->channel["link"] == "http://kosh.kmem.org/projects/solarcell/")
 	
 	foreach ($rss->items as $item) {
 		if($item["ams"]["category"] == "summary"){
-			$description = $item["description"];
+			$description = $item["ams"]["description"];
 		}
 		
 		if($item["ams"]["category"] == "news"){

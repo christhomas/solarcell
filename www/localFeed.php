@@ -4,12 +4,14 @@
 define("MAGPIE_CACHE_AGE", 3600);
 /* end debugging */
 require_once("phpbase/SourceForgeRSS.php");
-require_once("rsswriter.php");
+require_once("phpbase/rsswriter.php");
 
 $server = "http://".$_SERVER["HTTP_HOST"].substr($_SERVER["PHP_SELF"],0,strrpos($_SERVER["PHP_SELF"],"/"));
 
-if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
-	define("MAGPIE_CACHE_ON", false);
+if(isset($_GET["getFeed"])){
+	define("MAGPIE_CACHE_ON", true);
+	define("MAGPIE_CACHE_LOC", $_SERVER["DOCUMENT_ROOT"]."/rsscache");
+	define("MAGPIE_CACHE_TYPE","file");
 	require_once("magpierss/rss_fetch.inc");	
 	
 	$site = "http://kosh.kmem.org/projects/solarcell/";
@@ -20,7 +22,7 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	
 	$rss = new RSSWriter(	$site, 
 											"RSS site feed linker",
-											"Antimatter Studios", 
+											"Solarcell website feed", 
 											array(	"ams:publisher" => "Antimatter Studios", 
 														"ams:creator" => "Christopher Alexander Thomas",
 														"ams:filecount" => count($feed["files"]->items),
@@ -34,17 +36,21 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 	 * 
 	 */
 	$description = SourceforgeRSS::parseChunk($feed["summary"]->items[0]["description"],"Project description: ");
-	$rss->addItem($site,"SolarCell",array(	"description" => $description,
+	$rss->addItem($site,"SolarCell",array(	"ams:description" => $description,
 																	"ams:category" => "summary"	));
 	if($feed["files"]){
 		foreach($feed["files"]->items as $item){
 			$rssData = SourceforgeRSS::parseFileRelease($item);
 			
-			$rss->addItem($rssData["url"],$rssData["file"], array(	"ams:category" => "file",
-																									"ams:count" => $rssData["dlcount"], 
-																									"ams:size" => $rssData["filesize"],
+			foreach($rssData["files"] as $f){
+				$rss->addItem($rssData["url"],$f["filename"], array( "ams:category" => "file",
+																									"ams:count" => $f["dlcount"], 
+																									"ams:size" => $f["filesize"],
 																									"ams:date" => $rssData["shortdate"],
 																									"ams:type" => $rssData["type"]));
+			}
+																			
+			//print("<pre>"); print_r($rssData); print("</pre>");																									
 		}
 	}
 		
@@ -66,15 +72,15 @@ if(isset($_GET["getFeed"]) && $_GET["getFeed"] == "please"){
 		foreach($feed["news"]->items as $item){
 			$rssData = SourceforgeRSS::parseNews($item);
 			
-			$rss->addItem($rssData["url"],$rssData["author"],array(	"description" => $rssData["headline"],
-																										"ams:category" => "news",
-																										"ams:newsID" => $numItem++,
-																										"ams:body" => $rssData["body"],
-																										"ams:date" => $rssData["shortdate"]));
+			$rss->addItem($server."/news.php#".$rssData["headline"],$rssData["author"],
+										array(	"description" => $rssData["headline"],
+													"ams:category" => "news",
+													"ams:newsID" => $numItem++,
+													"ams:body" => $rssData["body"],
+													"ams:date" => $rssData["shortdate"]));
 		}
 	 }	
 	/*	Serialise out to the feed reader
-	 * 
 	 */
 	$rss->serialize();
 }else{
