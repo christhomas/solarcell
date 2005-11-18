@@ -23,6 +23,10 @@ if($rss && ($rss->channel["link"] == "http://kosh.kmem.org/projects/solarcell/")
 	}
 }
 
+$visitor = 0;
+include("stats.php");
+updateStats();
+
 include("library.php");
 $imgapp = getImageAppend();
 
@@ -43,6 +47,7 @@ $scellContent = <<<HTML
   routine or even the need for RPM/DEB files, it's pretty much just a folder with an executable within, 
   you run it, you set it up, you have a nice day. I think doing anything more than this, would just be 
   my perverse sense of humour.</p>
+<p><b>Number of visitors since November 2005: $visitor</b></p>
 </div>
 <div class="news">
 <div><img src="images/text_news$imgapp.png" alt="News section" /></div>
