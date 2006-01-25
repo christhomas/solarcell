@@ -48,9 +48,7 @@ if(isset($_GET["getFeed"])){
 																									"ams:size" => $f["filesize"],
 																									"ams:date" => $rssData["shortdate"],
 																									"ams:type" => $rssData["type"]));
-			}
-																			
-			//print("<pre>"); print_r($rssData); print("</pre>");																									
+			}																						
 		}
 	}
 		
@@ -89,8 +87,6 @@ if(isset($_GET["getFeed"])){
 	define("MAGPIE_CACHE_TYPE","file");
 	define("MAGPIE_CACHE_SOFTLIMIT",20*1024);
 	require_once("magpierss/rss_fetch.inc");
-	
-	//print("<pre>"); print_r($_SERVER); print("</pre>");
 
 	// load some RSS file
 	$rss = fetch_rss($server."/localFeed.php?getFeed=please");
